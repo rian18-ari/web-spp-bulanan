@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny catch-all for undefined collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // User accounts & staff roles
+    match /users/{userId} {
+      allow get: if isValidId(userId);
+      allow list: if true;
+      allow write: if isValidId(userId);
+    }
+
+    // Students / Santri collection
+    match /students/{studentId} {
+      allow get: if isValidId(studentId);
+      allow list: if true;
+      allow write: if isValidId(studentId);
+    }
+
+    // Monthly Bills collection
+    match /bills/{billId} {
+      allow get: if isValidId(billId);
+      allow list: if true;
+      allow write: if isValidId(billId);
+    }
+
+    // Payments transaction ledger
+    match /payments/{paymentId} {
+      allow get: if isValidId(paymentId);
+      allow list: if true;
+      allow write: if isValidId(paymentId);
+    }
+
+    // School & System Settings
+    match /school_settings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list: if true;
+      allow write: if isValidId(settingId);
+    }
+
+    // System connectivity test probe
+    match /system/{docId} {
+      allow get: if true;
+    }
+  }
+}
+
+
+

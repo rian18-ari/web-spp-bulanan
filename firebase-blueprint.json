@@ -1,0 +1,131 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role-based access for school staff (Admin or Bendahara)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "bendahara"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "name", "role"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student or Islamic boarding school santri profile",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nis": { "type": "string" },
+        "nisn": { "type": "string" },
+        "name": { "type": "string" },
+        "gender": { "type": "string", "enum": ["L", "P"] },
+        "classGrade": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "category": { "type": "string", "enum": ["reguler", "asrama_santri", "beasiswa"] },
+        "dormRoom": { "type": "string" },
+        "parentName": { "type": "string" },
+        "parentPhone": { "type": "string" },
+        "address": { "type": "string" },
+        "enrollmentDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "inactive"] },
+        "monthlyFee": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "nis", "name", "gender", "classGrade", "status", "monthlyFee"]
+    },
+    "Bill": {
+      "title": "Bill",
+      "description": "Monthly tuition fee bill obligation for a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "classGrade": { "type": "string" },
+        "gradeLevel": { "type": "string" },
+        "month": { "type": "number" },
+        "year": { "type": "number" },
+        "academicYear": { "type": "string" },
+        "amount": { "type": "number" },
+        "paidAmount": { "type": "number" },
+        "remainingAmount": { "type": "number" },
+        "dueDate": { "type": "string" },
+        "status": { "type": "string", "enum": ["unpaid", "partial", "paid", "overdue"] },
+        "paidDate": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "receiptNumber": { "type": "string" }
+      },
+      "required": ["id", "studentId", "studentName", "classGrade", "month", "year", "amount", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Official tuition payment transaction record and receipt ledger",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "receiptNumber": { "type": "string" },
+        "studentId": { "type": "string" },
+        "studentName": { "type": "string" },
+        "nis": { "type": "string" },
+        "classGrade": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "paymentMethod": { "type": "string" },
+        "bankName": { "type": "string" },
+        "paymentDate": { "type": "string" },
+        "cashierName": { "type": "string" },
+        "notes": { "type": "string" },
+        "status": { "type": "string", "enum": ["completed", "cancelled"] },
+        "cancelledAt": { "type": "string" },
+        "cancelledReason": { "type": "string" },
+        "cancelledBy": { "type": "string" }
+      },
+      "required": ["id", "receiptNumber", "studentId", "studentName", "totalAmount", "paymentMethod", "paymentDate", "status"]
+    },
+    "SchoolSettings": {
+      "title": "SchoolSettings",
+      "description": "General institutional profile, default tuition rates, and banking details",
+      "type": "object",
+      "properties": {
+        "schoolName": { "type": "string" },
+        "institutionType": { "type": "string", "enum": ["sekolah", "pesantren", "terpadu"] },
+        "tagline": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "academicYear": { "type": "string" },
+        "activeMonth": { "type": "number" },
+        "activeYear": { "type": "number" },
+        "defaultDueDateDay": { "type": "number" },
+        "headmasterName": { "type": "string" },
+        "treasurerName": { "type": "string" }
+      },
+      "required": ["schoolName", "institutionType", "academicYear", "activeMonth", "activeYear"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User accounts with system role access"
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Active and inactive students and santri registry"
+    },
+    "/bills/{billId}": {
+      "schema": { "$ref": "#/entities/Bill" },
+      "description": "Monthly tuition bills per student"
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Recorded tuition payment transactions with audit metadata"
+    },
+    "/school_settings/{settingId}": {
+      "schema": { "$ref": "#/entities/SchoolSettings" },
+      "description": "System and school configuration document"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Pembayaran SPP",
+  "description": "Aplikasi manajemen dan pendataan pembayaran SPP bulanan sekolah dan pondok pesantren terintegrasi dengan pencatatan tagihan, kuitansi digital, rekap tunggakan, dan laporan keuangan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
